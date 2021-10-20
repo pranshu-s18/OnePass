@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Password Manager</string>
+
+    <!-- Biometric Messages -->
+    <string name="B_Title">Biometric Authentication</string>
+    <string name="B_Cancel">Biometric Authentication Cancelled by User</string>
+    <string name="B_Lock">Too many Attempts. Try Again Later.</string>
+    <string name="B_Error">Error occurred in Biometric Authentication</string>
+    <string name="B_Unavailable">Hardware unavailable</string>
+    <string name="B_Not_Enrolled">Biometrics are not enrolled</string>
+</resources>

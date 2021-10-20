@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "8898020850",
+    "project_id": "prototek-passwordmanager",
+    "storage_bucket": "prototek-passwordmanager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8898020850:android:66aaa3eb4b51d0434bd76b",
+        "android_client_info": {
+          "package_name": "in.co.prototek.passwordmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8898020850-rst4ta6qj1uqang0aqlkotjbq3ppj6id.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.co.prototek.passwordmanager",
+            "certificate_hash": "af9ca79259aff9659e8e2859ebcfb65667fed2f6"
+          }
+        },
+        {
+          "client_id": "8898020850-i1hg37q14asahikehmjjf80hdgnrsmhe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb-n1njfTBFnIF7W1mfy_OsTGM54zauVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8898020850-i1hg37q14asahikehmjjf80hdgnrsmhe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

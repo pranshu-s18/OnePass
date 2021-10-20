@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/login">
+
+    <fragment
+        android:id="@+id/login"
+        android:name="in.co.prototek.passwordmanager.Login"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/fingerprint"
+        android:name="in.co.prototek.passwordmanager.Fingerprint"
+        android:label="Fingerprint"
+        tools:layout="@layout/fragment_fingerprint" />
+
+    <fragment
+        android:id="@+id/passwordManager"
+        android:name="in.co.prototek.passwordmanager.PasswordManager"
+        android:label="Password Manager"
+        tools:layout="@layout/fragment_password_manager" />
+
+    <fragment
+        android:id="@+id/addCredentials"
+        android:name="in.co.prototek.passwordmanager.AddCredentials"
+        android:label="Add Credentials"
+        tools:layout="@layout/fragment_add_credentials" />
+
+</navigation>
