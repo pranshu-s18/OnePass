@@ -1,4 +1,5 @@
 package `in`.co.prototek.passwordmanager
+
 import `in`.co.prototek.passwordmanager.databinding.FragmentLoginBinding
 import android.app.Activity
 import android.content.res.Configuration
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
 
 class Login : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -35,7 +37,7 @@ class Login : Fragment() {
             .requestEmail()
             .build()
 
-        client = GoogleSignIn.getClient(requireActivity(), gso)
+        client = GoogleSignIn.getClient(requireContext(), gso)
         auth = Firebase.auth
     }
 
@@ -46,7 +48,7 @@ class Login : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if(auth.currentUser != null) findNavController().navigate(R.id.fingerprint)
+        if (auth.currentUser != null) findNavController().navigate(R.id.fingerprint)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,12 +64,13 @@ class Login : Fragment() {
     private var resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
             if (res.resultCode == Activity.RESULT_OK) {
-                Log.d(MainActivity.TAG, "OK")
+                binding.progressBar.visibility = View.VISIBLE
                 val task = GoogleSignIn.getSignedInAccountFromIntent(res.data)
                 try {
                     val account = task.getResult(ApiException::class.java)!!
                     firebaseAuth(account.idToken!!)
                 } catch (e: ApiException) {
+                    binding.progressBar.visibility = View.INVISIBLE
                     Log.d(MainActivity.TAG, "Google Sign In EXCEPTION", e)
                     Toast.makeText(requireContext(), "Google Sign In Failed", Toast.LENGTH_SHORT).show()
                 }
@@ -77,6 +80,7 @@ class Login : Fragment() {
     private fun firebaseAuth(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener(requireActivity()) { task ->
+            binding.progressBar.visibility = View.INVISIBLE
             if (task.isSuccessful) findNavController().navigate(R.id.fingerprint)
             else {
                 Log.d(MainActivity.TAG, "Sign in with Credential Failed", task.exception)

@@ -11,4 +11,15 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.Material.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signIn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:indeterminateTint="?attr/colorSecondaryVariant"
+        android:visibility="invisible" />
+
 </RelativeLayout>
