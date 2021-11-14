@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,30 +37,53 @@ class PasswordManager : Fragment() {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        var errorOccurred = false
-        val user = db.collection("users").document(auth.currentUser!!.uid)
-        user.get().addOnSuccessListener { doc ->
-            if (doc.exists()) {
-                user.collection("passwords").get()
-                    .addOnSuccessListener { passwords -> Log.d(MainActivity.TAG, passwords.documents.toString()) }
-                    .addOnFailureListener { e ->
-                        Log.w(MainActivity.TAG, "Error in fetching passwords", e)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.add.setOnClickListener { findNavController().navigate(R.id.addCredentials) }
+        val encryptedFile = getEncryptedFile(requireContext())
+        if (store(requireContext()).exists()) {
+            try {
+                encryptedFile.openFileInput().use { input ->
+                    Log.d(
+                        MainActivity.TAG,
+                        String(input.readBytes(), Charsets.UTF_8)
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e(MainActivity.TAG, "Decrypt Error", e)
+                Toast.makeText(requireContext(), "Unable to decrypt", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            var errorOccurred = false
+            val user = db.collection("users").document(auth.currentUser!!.uid)
+            user.get().addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    user.collection("passwords").get().addOnSuccessListener { pswd ->
+                        Log.d(
+                            MainActivity.TAG,
+                            pswd.documents.toString()
+                        )
+                    }.addOnFailureListener { e ->
+                        Log.w(MainActivity.TAG, "Error in fetching from Firebase", e)
                         errorOccurred = true
                     }
-            } else
-                user.set(hashMapOf("exists" to true))
-                    .addOnSuccessListener { Log.d(MainActivity.TAG, "User added to DB") }
-                    .addOnFailureListener { e ->
-                        Log.w(MainActivity.TAG, "Error in adding user to DB", e)
-                        errorOccurred = true
-                    }
-        }.addOnFailureListener { e ->
-            Log.d(MainActivity.TAG, "DB Error", e)
-            errorOccurred = true
-        }
+                } else {
+                    user.set(hashMapOf("exists" to true))
+                        .addOnSuccessListener { Log.d(MainActivity.TAG, "User added to Firebase") }
+                        .addOnFailureListener { e ->
+                            Log.w(MainActivity.TAG, "Error adding user to Firebase", e)
+                            errorOccurred = true
+                        }
+                }
+            }.addOnFailureListener { e ->
+                Log.w(MainActivity.TAG, "DB Error", e)
+                errorOccurred = true
+            }
 
-        if(errorOccurred) Toast.makeText(requireContext(), "Some Server Error Occurred...", Toast.LENGTH_SHORT).show()
+            if (errorOccurred) Toast.makeText(
+                requireContext(),
+                "Some server error occurred...",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

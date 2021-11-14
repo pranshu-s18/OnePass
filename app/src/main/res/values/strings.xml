@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Password Manager</string>
+    <string name="add_password">Add Password</string>
+    <string name="file_name">Store</string>
+    <string name="record">%1$s, %2$s, %3$s</string>
 
     <!-- Biometric Messages -->
     <string name="B_Title">Biometric Authentication</string>
