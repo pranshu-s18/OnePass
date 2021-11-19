@@ -3,30 +3,101 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/login">
+    app:startDestination="@id/home">
 
     <fragment
-        android:id="@+id/login"
-        android:name="in.co.prototek.passwordmanager.Login"
-        android:label="Login"
-        tools:layout="@layout/fragment_login" />
+        android:id="@+id/home"
+        android:name="in.co.prototek.onepass.Home"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/home_AddCredential"
+            app:destination="@id/addCredential"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/home_EncryptedContent"
+            app:destination="@id/encryptedContent"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+    </fragment>
 
     <fragment
-        android:id="@+id/fingerprint"
-        android:name="in.co.prototek.passwordmanager.Fingerprint"
-        android:label="Fingerprint"
-        tools:layout="@layout/fragment_fingerprint" />
-
-    <fragment
-        android:id="@+id/passwordManager"
-        android:name="in.co.prototek.passwordmanager.PasswordManager"
-        android:label="Password Manager"
-        tools:layout="@layout/fragment_password_manager" />
-
-    <fragment
-        android:id="@+id/addCredentials"
-        android:name="in.co.prototek.passwordmanager.AddCredentials"
+        android:id="@+id/addCredential"
+        android:name="in.co.prototek.onepass.AddCredential"
         android:label="Add Credentials"
-        tools:layout="@layout/fragment_add_credentials" />
+        tools:layout="@layout/fragment_add_credential">
+
+        <action
+            android:id="@+id/addCredential_Home"
+            app:destination="@id/home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/addCredential_Generator"
+            app:destination="@id/generator"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <argument
+            android:name="username"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="password"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/generator"
+        android:name="in.co.prototek.onepass.Generator"
+        android:label="Generator"
+        tools:layout="@layout/fragment_generator">
+
+        <action
+            android:id="@+id/generator_AddCredential"
+            app:destination="@id/addCredential"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <argument
+            android:name="username"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="password"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="isUsername"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/encryptedContent"
+        android:name="in.co.prototek.onepass.EncryptedContent"
+        android:label="View Encrypted Content"
+        tools:layout="@layout/fragment_encrypted_content">
+
+        <action
+            android:id="@+id/encryptedContent_Home"
+            app:destination="@id/home"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+    </fragment>
 
 </navigation>

@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">Password Manager</string>
-    <string name="add_password">Add Password</string>
+    <string name="app_name">OnePass</string>
     <string name="file_name">Store</string>
-    <string name="record">%1$s, %2$s, %3$s</string>
+
+    <!-- Credential related strings -->
+    <string name="record">\n%1$s, %2$s, %3$s</string>
+    <string name="username">Username: %1$s</string>
+    <string name="password">Password: %1$s</string>
 
     <!-- Biometric Messages -->
     <string name="B_Title">Biometric Authentication</string>
@@ -11,4 +14,7 @@
     <string name="B_Error">Error occurred in Biometric Authentication</string>
     <string name="B_Unavailable">Hardware unavailable</string>
     <string name="B_Not_Enrolled">Biometrics are not enrolled</string>
+    <string name="empty">No Credentials Found</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
