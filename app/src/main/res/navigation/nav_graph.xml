@@ -17,12 +17,6 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
 
-        <action
-            android:id="@+id/home_EncryptedContent"
-            app:destination="@id/encryptedContent"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-
     </fragment>
 
     <fragment
@@ -84,20 +78,6 @@
         <argument
             android:name="isUsername"
             app:argType="boolean" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/encryptedContent"
-        android:name="in.co.prototek.onepass.EncryptedContent"
-        android:label="View Encrypted Content"
-        tools:layout="@layout/fragment_encrypted_content">
-
-        <action
-            android:id="@+id/encryptedContent_Home"
-            app:destination="@id/home"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
-
     </fragment>
 
 </navigation>

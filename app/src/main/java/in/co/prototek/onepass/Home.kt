@@ -35,7 +35,6 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.add.setOnClickListener { findNavController().navigate(R.id.home_AddCredential) }
-        binding.showContent.setOnClickListener { findNavController().navigate(R.id.home_EncryptedContent) }
     }
 
     override fun onStart() {
