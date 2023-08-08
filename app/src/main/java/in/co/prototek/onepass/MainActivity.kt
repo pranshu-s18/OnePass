@@ -5,8 +5,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         setContentView(R.layout.activity_main)
 
         executor = ContextCompat.getMainExecutor(this)
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder().setTitle(getString(R.string.B_Title))
-            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+            .setAllowedAuthenticators(Authenticators.BIOMETRIC_STRONG)
             .setNegativeButtonText("Cancel").build()
     }
 
@@ -67,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkBiometrics(): Boolean {
         val biometricManager = BiometricManager.from(this)
-        val check = biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+        val check = biometricManager.canAuthenticate(Authenticators.BIOMETRIC_STRONG)
         return if (check == BiometricManager.BIOMETRIC_SUCCESS) true
         else {
             Toast.makeText(this, errorMessage(check, false), Toast.LENGTH_SHORT).show()
