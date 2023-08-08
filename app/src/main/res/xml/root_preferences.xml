@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/pref_header_security">
+        <SwitchPreferenceCompat
+            app:key="@string/pref_screenshots_key"
+            app:summary="Enable screenshots (not recommended)"
+            app:title="Allow screenshots" />
+
+        <SwitchPreferenceCompat
+            app:key="@string/pref_clearClipboard_key"
+            app:summary="Clear clipboard after 30 seconds"
+            app:title="Clear clipboard" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

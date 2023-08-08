@@ -11,4 +11,9 @@
         android:label="Home"
         tools:layout="@layout/fragment_home" />
 
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="in.co.prototek.onepass.SettingsFragment"
+        android:label="Settings" />
+
 </navigation>

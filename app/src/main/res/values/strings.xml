@@ -24,4 +24,9 @@
     <string name="label_settings">Settings</string>
     <string name="open_drawer_content_desc">Open navigation drawer</string>
     <string name="close_drawer_content_desc">Close navigation drawer</string>
+
+    <!-- Preference Titles -->
+    <string name="pref_header_security">Security</string>
+    <string name="pref_screenshots_key">screenshots</string>
+    <string name="pref_clearClipboard_key">clearClipboard</string>
 </resources>
