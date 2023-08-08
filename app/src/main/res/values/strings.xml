@@ -2,6 +2,10 @@
     <string name="app_name">OnePass</string>
     <string name="file_name">Store</string>
 
+    <!-- Home Fragment -->
+    <string name="empty">No Credentials Found</string>
+    <string name="add_new_login">Add new login</string>
+
     <!-- Credential related strings -->
     <string name="record">\n%1$s, %2$s, %3$s</string>
     <string name="username">Username: %1$s</string>
@@ -14,5 +18,10 @@
     <string name="B_Error">Error occurred in Biometric Authentication</string>
     <string name="B_Unavailable">Hardware unavailable</string>
     <string name="B_Not_Enrolled">Biometrics are not enrolled</string>
-    <string name="empty">No Credentials Found</string>
+    
+    <!-- Navigation Drawer -->
+    <string name="label_home">Home</string>
+    <string name="label_settings">Settings</string>
+    <string name="open_drawer_content_desc">Open navigation drawer</string>
+    <string name="close_drawer_content_desc">Close navigation drawer</string>
 </resources>

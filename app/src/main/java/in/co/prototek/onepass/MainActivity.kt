@@ -1,105 +1,62 @@
 package `in`.co.prototek.onepass
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
-import java.util.concurrent.Executor
+import androidx.navigation.ui.setupWithNavController
+import `in`.co.prototek.onepass.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var navController: NavController
-    private lateinit var executor: Executor
-    private lateinit var biometricPrompt: BiometricPrompt
-    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Splash Screen config -- Happens before setContentView
         installSplashScreen()
-        setContentView(R.layout.activity_main)
 
-        executor = ContextCompat.getMainExecutor(this)
-        biometricPrompt =
-            BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    Log.d(TAG, errString.toString())
-                    Toast.makeText(
-                        this@MainActivity,
-                        errorMessage(errorCode, true),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        // ViewBinding
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                    navController = navHostFragment.navController
-                    navController.setGraph(R.navigation.nav_graph)
-                    navController.addOnDestinationChangedListener { _, destination, arguments ->
-                        if (destination.id == R.id.generator) {
-                            val name = if(arguments!!.getBoolean("isPassword")) "Password" else "Username"
-                            destination.label = "$name Generator"
-                        }
-                    }
+        // Nav controller config
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.navView.setupWithNavController(navController)
 
-                    setupActionBarWithNavController(navController)
-                }
-            })
+        // Drawer config
+        setSupportActionBar(binding.toolbar)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.nav_home, R.id.nav_settings),
+            binding.drawerLayout,
+        )
 
-        promptInfo = BiometricPrompt.PromptInfo.Builder().setTitle(getString(R.string.B_Title))
-            .setAllowedAuthenticators(Authenticators.BIOMETRIC_STRONG)
-            .setNegativeButtonText("Cancel").build()
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (checkBiometrics()) biometricPrompt.authenticate(promptInfo)
+    // Handle menu item selection
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
+    // Handle back button navigation
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun checkBiometrics(): Boolean {
-        val biometricManager = BiometricManager.from(this)
-        val check = biometricManager.canAuthenticate(Authenticators.BIOMETRIC_STRONG)
-        return if (check == BiometricManager.BIOMETRIC_SUCCESS) true
-        else {
-            Toast.makeText(this, errorMessage(check, false), Toast.LENGTH_SHORT).show()
-            false
-        }
-    }
-
-    private fun errorMessage(errorCode: Int, authError: Boolean): String {
-        return if (authError) {
-            when (errorCode) {
-                BiometricPrompt.ERROR_NEGATIVE_BUTTON, BiometricPrompt.ERROR_USER_CANCELED -> getString(
-                    R.string.B_Cancel
-                )
-                BiometricPrompt.ERROR_LOCKOUT, BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> getString(
-                    R.string.B_Lock
-                )
-                else -> getString(R.string.B_Error)
-            }
-        } else {
-            when (errorCode) {
-                BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE, BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE, BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> getString(
-                    R.string.B_Unavailable
-                )
-                BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> getString(R.string.B_Not_Enrolled)
-                else -> getString(R.string.B_Error)
-            }
-        }
-    }
-
+    // Companion object to hold constants
     companion object {
         const val TAG = "ONEPASS_LOGS"
     }
