@@ -15,6 +15,4 @@
     <string name="B_Unavailable">Hardware unavailable</string>
     <string name="B_Not_Enrolled">Biometrics are not enrolled</string>
     <string name="empty">No Credentials Found</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
