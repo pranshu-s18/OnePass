@@ -1,8 +1,9 @@
-package `in`.co.prototek.onepass
+package `in`.co.prototek.onepass.utils
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
+import `in`.co.prototek.onepass.R
 import java.io.File
 import java.net.URLEncoder
 
@@ -21,7 +22,7 @@ fun store(context: Context): File {
     return File(context.filesDir, context.getString(R.string.file_name).urlEncode())
 }
 
-fun resetFile(context: Context) {
+fun clearAllData(context: Context) {
     val file = store(context)
     if (file.exists()) file.delete()
 }

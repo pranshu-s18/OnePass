@@ -34,13 +34,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:contentDescription="Add Credential"
+        android:contentDescription="@string/add_new_login"
         app:backgroundTint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/add"
-        app:tint="?attr/colorOnPrimary"
-        tools:ignore="HardcodedText" />
+        app:srcCompat="@drawable/icon_add"
+        app:tint="?attr/colorOnPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/service"
             android:layout_marginBottom="5dp"
-            card_view:drawableEndCompat="@drawable/copy"
+            card_view:drawableEndCompat="@drawable/icon_copy"
             tools:text="Username" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/username"
-            card_view:drawableEndCompat="@drawable/copy"
+            card_view:drawableEndCompat="@drawable/icon_copy"
             tools:text="Password" />
 
     </RelativeLayout>
