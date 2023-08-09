@@ -15,16 +15,19 @@
         android:background="@color/dark_gray"
         android:padding="16dp">
 
+        <!-- Ignoring the warning about RTL symmetry here -->
         <TextView
             android:id="@+id/password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
             android:textSize="22sp"
             app:layout_constraintEnd_toStartOf="@id/regenerate"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry" />
 
+        <!-- Button to regenerate a new random password -->
         <Button
             android:id="@+id/regenerate"
             style="@style/Button.Icon"
@@ -35,23 +38,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Button to copy the password to the clipboard -->
         <Button
             android:id="@+id/copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Copy"
+            android:text="@string/button_copy"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Slider for Password Length -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp">
 
+        <!-- Minimum password length = 4 -->
         <TextView
             android:id="@+id/length_start"
             style="@style/TextAppearance.MaterialComponents.Body2"
@@ -63,6 +69,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText" />
 
+        <!-- Slider to select the password length -->
         <com.google.android.material.slider.Slider
             android:id="@+id/password_length"
             android:layout_width="0dp"
@@ -75,6 +82,7 @@
             app:layout_constraintStart_toEndOf="@id/length_start"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Maximum password length = 32 -->
         <TextView
             android:id="@+id/length_end"
             style="@style/TextAppearance.MaterialComponents.Body2"
@@ -88,13 +96,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Switches to select the password character set -->
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/lowercase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
         android:paddingHorizontal="16dp"
-        android:text="Lowercase (a-z)" />
+        android:text="@string/password_lowercase" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/uppercase"
@@ -102,7 +111,7 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:paddingHorizontal="16dp"
-        android:text="Uppercase (A-Z)" />
+        android:text="@string/password_uppercase" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/numbers"
@@ -110,14 +119,13 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:paddingHorizontal="16dp"
-        android:text="Numbers (0-9)" />
+        android:text="@string/password_numbers" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/symbols"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
-        android:text="Symbols" />
-
+        android:text="@string/password_symbols" />
 
 </LinearLayout>

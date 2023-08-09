@@ -31,4 +31,17 @@
     <string name="pref_screenshots_key">screenshots</string>
     <string name="pref_clearClipboard_key">clearClipboard</string>
     <string name="pref_clearData_key">clearData</string>
+
+    <!-- Input field -->
+    <string name="input_hint_service">Service (Name/URL)</string>
+    <string name="input_hint_username">Username</string>
+    <string name="input_hint_password">Password</string>
+
+    <!-- Button -->
+    <string name="button_save">Save</string>
+    <string name="button_copy">Copy</string>
+    <string name="password_lowercase">Lowercase (a-z)</string>
+    <string name="password_uppercase">Uppercase (A-Z)</string>
+    <string name="password_numbers">Numbers (0-9)</string>
+    <string name="password_symbols">Symbols</string>
 </resources>
