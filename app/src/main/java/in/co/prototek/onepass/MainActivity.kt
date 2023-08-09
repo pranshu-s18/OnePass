@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         // Drawer config
         setSupportActionBar(binding.toolbar)
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.nav_home, R.id.nav_settings),
+            setOf(R.id.nav_home, R.id.nav_settings, R.id.nav_generator),
             binding.drawerLayout,
         )
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    // Clear focus when touched outside
+    // Clear focus when touched outside (for EditText)
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         if (ev?.action == MotionEvent.ACTION_DOWN && currentFocus != null) {
             if (currentFocus is TextInputEditText) {

@@ -12,8 +12,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
     }
 
+    // Handle preference clicks
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         when (preference.key) {
+            // Toggle screenshots and screen recording
             getString(R.string.pref_screenshots_key) -> {
                 val allow = (preference as SwitchPreferenceCompat).isChecked
                 val window = requireActivity().window
@@ -21,6 +23,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 else window.setFlags(FLAG_SECURE, FLAG_SECURE)
             }
 
+            // Erase all credentials
             getString(R.string.pref_clearData_key) -> clearAllData(requireContext())
         }
 

@@ -8,6 +8,8 @@ import java.io.File
 import java.net.URLEncoder
 
 fun String.urlEncode(): String = URLEncoder.encode(this, "UTF-8")
+
+// https://developer.android.com/topic/security/data
 fun getEncryptedFile(context: Context): EncryptedFile {
     val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build()
@@ -18,15 +20,18 @@ fun getEncryptedFile(context: Context): EncryptedFile {
     ).build()
 }
 
+// Wrapper function to get file from storage
 fun store(context: Context): File {
     return File(context.filesDir, context.getString(R.string.file_name).urlEncode())
 }
 
+// Utility function to clear all data (delete file)
 fun clearAllData(context: Context) {
     val file = store(context)
     if (file.exists()) file.delete()
 }
 
+// Decrypt and read file
 fun readEncryptedFile(context: Context): String {
     return if (store(context).exists()) {
         val encryptedFile = getEncryptedFile(context)

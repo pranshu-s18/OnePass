@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+    <!-- Displays the list of credentials -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/passwordView"
         android:layout_width="match_parent"
@@ -14,6 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Displays a message when the list is empty -->
     <TextView
         android:id="@+id/empty"
         android:layout_width="wrap_content"
@@ -27,6 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Floating action button to add a new credential -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add"
         android:layout_width="wrap_content"
