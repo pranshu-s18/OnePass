@@ -8,46 +8,92 @@
     android:orientation="vertical"
     tools:context=".Generator">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/dark_gray"
-        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/password"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:paddingLeft="8dp"
             android:textSize="22sp"
-            app:drawableEndCompat="@drawable/icon_renew"
-            app:drawableTint="?attr/colorPrimary" />
+            app:layout_constraintEnd_toStartOf="@id/regenerate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/regenerate"
+            style="@style/Button.Icon"
+            android:layout_height="29dp"
+            android:layout_alignParentEnd="true"
+            android:drawableEnd="@drawable/icon_renew"
+            android:hapticFeedbackEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/copy"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:text="Copy" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Copy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/password_length"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stepSize="1"
-        android:value="12"
-        android:valueFrom="4"
-        android:valueTo="32" />
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/length_start"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/password_length"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:stepSize="1"
+            android:value="12"
+            android:valueFrom="4"
+            android:valueTo="32"
+            app:layout_constraintEnd_toStartOf="@id/length_end"
+            app:layout_constraintStart_toEndOf="@id/length_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/length_end"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="32"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/lowercase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
+        android:paddingHorizontal="16dp"
         android:text="Lowercase (a-z)" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -55,6 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
+        android:paddingHorizontal="16dp"
         android:text="Uppercase (A-Z)" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -62,12 +109,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
+        android:paddingHorizontal="16dp"
         android:text="Numbers (0-9)" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/symbols"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
         android:text="Symbols" />
+
 
 </LinearLayout>

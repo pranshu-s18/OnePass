@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import `in`.co.prototek.onepass.databinding.FragmentGeneratorBinding
 import `in`.co.prototek.onepass.utils.Constants
 import java.security.SecureRandom
 
-class Generator : Fragment() {
+class Generator : DialogFragment() {
     private var _binding: FragmentGeneratorBinding? = null
     private val binding get() = _binding!!
 
@@ -35,6 +35,9 @@ class Generator : Fragment() {
         binding.uppercase.setOnClickListener { generate() }
         binding.numbers.setOnClickListener { generate() }
         binding.symbols.setOnClickListener { generate() }
+
+        // Regenerate password on click
+        binding.regenerate.setOnClickListener { generate() }
 
         // Copy password to clipboard
         binding.copy.setOnClickListener {
