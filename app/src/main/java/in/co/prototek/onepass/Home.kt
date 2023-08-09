@@ -30,6 +30,8 @@ class Home : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        // Set up RecyclerView
         binding.passwordView.layoutManager = LinearLayoutManager(requireContext())
         binding.passwordView.setHasFixedSize(true)
         binding.passwordView.adapter = RecyclerViewAdapter(records as ArrayList<Credential>)
@@ -44,15 +46,18 @@ class Home : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        // Read credentials from encrypted file and update RecyclerView
         if (storeFile.exists()) {
             val data = readEncryptedFile(requireContext())
             records.clear()
             data.lines().forEach { record ->
-                val cred = record.split(',').map { str -> str.filterNot { it.isWhitespace() } }
+                val cred = record.split(',')
                 if (record.isNotEmpty()) records.add(Credential(cred[0], cred[1], cred[2]))
             }
         }
 
+        // Show empty view if no credentials are saved
         binding.empty.visibility =
             if (binding.passwordView.adapter!!.itemCount == 0) View.VISIBLE else View.GONE
     }
