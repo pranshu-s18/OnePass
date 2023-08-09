@@ -1,78 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
+    android:orientation="vertical"
     tools:context=".Generator">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:background="@color/dark_gray"
         android:orientation="vertical"
-        tools:ignore="UselessParent">
+        android:padding="16dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+        <TextView
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Number of Characters"
-            app:boxBackgroundColor="#00000000"
-            app:counterEnabled="true"
-            app:counterMaxLength="2"
-            tools:ignore="HardcodedText">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/charEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <CheckBox
-            android:id="@+id/lowercase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Lowercase (a-z)"
-            tools:ignore="HardcodedText" />
-
-        <CheckBox
-            android:id="@+id/uppercase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Uppercase (A-Z)"
-            tools:ignore="HardcodedText" />
-
-        <CheckBox
-            android:id="@+id/numbers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Numbers (0-9)"
-            tools:ignore="HardcodedText" />
-
-        <CheckBox
-            android:id="@+id/symbols"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Symbols (@$!#%&amp;)"
-            android:visibility="gone"
-            tools:ignore="HardcodedText" />
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="8dp"
+            android:textSize="22sp"
+            app:drawableEndCompat="@drawable/icon_renew"
+            app:drawableTint="?attr/colorPrimary" />
 
         <Button
-            android:id="@+id/gen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Generate"
-            tools:ignore="HardcodedText" />
+            android:id="@+id/copy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:text="Copy" />
 
     </LinearLayout>
 
-</RelativeLayout>
+    <com.google.android.material.slider.Slider
+        android:id="@+id/password_length"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stepSize="1"
+        android:value="12"
+        android:valueFrom="4"
+        android:valueTo="32" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/lowercase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Lowercase (a-z)" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/uppercase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Uppercase (A-Z)" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/numbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Numbers (0-9)" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/symbols"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Symbols" />
+
+</LinearLayout>

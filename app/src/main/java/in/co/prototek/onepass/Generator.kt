@@ -1,33 +1,20 @@
 package `in`.co.prototek.onepass
 
-import `in`.co.prototek.onepass.databinding.FragmentGeneratorBinding
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.os.Build
 import android.os.Bundle
-import android.text.InputFilter
-import android.text.InputFilter.LengthFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import `in`.co.prototek.onepass.databinding.FragmentGeneratorBinding
+import `in`.co.prototek.onepass.utils.Constants
+import java.security.SecureRandom
 
 class Generator : Fragment() {
-    private lateinit var username: String
-    private lateinit var password: String
-    private var isPassword = false
-
-    private var allowedChar = mutableListOf<Char>()
     private var _binding: FragmentGeneratorBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let { bundle ->
-            username = bundle.getString("username", "")
-            password = bundle.getString("password", "")
-            isPassword = bundle.getBoolean("isPassword")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,27 +22,60 @@ class Generator : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGeneratorBinding.inflate(inflater, container, false)
-        if (isPassword) binding.symbols.visibility = View.VISIBLE
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.charEditText.filters = arrayOf<InputFilter>(LengthFilter(2))
-        binding.gen.setOnClickListener {
-            allowedChar.clear()
-            if (binding.lowercase.isChecked) allowedChar.addAll('a'..'z')
-            if (binding.uppercase.isChecked) allowedChar.addAll('A'..'Z')
-            if (binding.numbers.isChecked) allowedChar.addAll('0'..'9')
-            if (binding.symbols.isChecked) allowedChar.addAll(listOf('@', '$', '!', '#', '%', '&'))
+        // Generate password using default configuration
+        generate()
 
-            val max = binding.charEditText.text.toString().toInt()
-            if (allowedChar.isNotEmpty()) {
-                if (isPassword) password = (1..max).map { allowedChar.random() }.joinToString("")
-                else username = (1..max).map { allowedChar.random() }.joinToString("")
+        // Generate password on configuration change
+        binding.passwordLength.addOnChangeListener { _, _, _ -> generate() }
+        binding.lowercase.setOnClickListener { generate() }
+        binding.uppercase.setOnClickListener { generate() }
+        binding.numbers.setOnClickListener { generate() }
+        binding.symbols.setOnClickListener { generate() }
 
-                val bundle = bundleOf("username" to username, "password" to password)
-                findNavController().navigate(R.id.generator_AddCredential, bundle)
+        // Copy password to clipboard
+        binding.copy.setOnClickListener {
+            val clip = ClipData.newPlainText("password", binding.password.text)
+            requireContext().getSystemService(ClipboardManager::class.java).setPrimaryClip(clip)
+        }
+    }
+
+    // Clear listeners
+    override fun onDestroyView() {
+        binding.passwordLength.clearOnChangeListeners()
+        super.onDestroyView()
+    }
+
+    // Generate password based on configuration and update UI
+    // Uses SecureRandom (Java) for generating random numbers
+    private fun generate() {
+        val allowedChar = mutableListOf<Char>()
+        if (binding.lowercase.isChecked) allowedChar.addAll(Constants.lowercaseCharacters)
+        if (binding.uppercase.isChecked) allowedChar.addAll(Constants.uppercaseCharacters)
+        if (binding.numbers.isChecked) allowedChar.addAll(Constants.numbers)
+        if (binding.symbols.isChecked) allowedChar.addAll(Constants.symbols)
+        if (allowedChar.isEmpty()) binding.password.text = ""
+
+        val max = binding.passwordLength.value.toInt()
+        if (allowedChar.isNotEmpty()) {
+            val random =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) SecureRandom.getInstanceStrong()
+                else SecureRandom()
+
+            val res = StringBuilder()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                random.ints(max.toLong(), 0, allowedChar.size)
+                    .forEach { res.append(allowedChar[it]) }
+            } else {
+                for (i in 1..max) {
+                    res.append(allowedChar[random.nextInt(allowedChar.size)])
+                }
             }
+
+            binding.password.text = res.toString()
         }
     }
 }
