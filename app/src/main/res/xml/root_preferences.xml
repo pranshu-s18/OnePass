@@ -11,6 +11,11 @@
             app:summary="Clear clipboard after 30 seconds"
             app:title="Clear clipboard" />
 
+        <Preference
+            app:key="@string/pref_clearData_key"
+            app:summary="Clear all data"
+            app:title="Clear data" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

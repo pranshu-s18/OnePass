@@ -20,6 +20,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 if (allow) window.clearFlags(FLAG_SECURE)
                 else window.setFlags(FLAG_SECURE, FLAG_SECURE)
             }
+
+            getString(R.string.pref_clearData_key) -> clearAllData(requireContext())
         }
 
         return super.onPreferenceTreeClick(preference)

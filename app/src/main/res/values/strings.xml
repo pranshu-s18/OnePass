@@ -29,4 +29,5 @@
     <string name="pref_header_security">Security</string>
     <string name="pref_screenshots_key">screenshots</string>
     <string name="pref_clearClipboard_key">clearClipboard</string>
+    <string name="pref_clearData_key">clearData</string>
 </resources>
