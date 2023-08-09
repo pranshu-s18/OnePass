@@ -2,6 +2,7 @@ package `in`.co.prototek.onepass
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
@@ -11,7 +12,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.textfield.TextInputEditText
 import `in`.co.prototek.onepass.databinding.ActivityMainBinding
+import `in`.co.prototek.onepass.utils.hideKeyboard
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -54,6 +57,19 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    // Clear focus when touched outside
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (ev?.action == MotionEvent.ACTION_DOWN && currentFocus != null) {
+            if (currentFocus is TextInputEditText) {
+                val tv = currentFocus as TextInputEditText
+                tv.clearFocus()
+                hideKeyboard(tv, this)
+            }
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 
     // Companion object to hold constants
