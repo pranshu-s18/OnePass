@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import `in`.co.prototek.onepass.data.Credential
+import `in`.co.prototek.onepass.utils.readEncryptedFile
+import `in`.co.prototek.onepass.utils.store
 import java.io.File
 
 class Home : Fragment() {
@@ -34,7 +37,9 @@ class Home : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.add.setOnClickListener { findNavController().navigate(R.id.home_AddCredential) }
+        binding.add.setOnClickListener {
+            findNavController().navigate(R.id.nav_action_home_to_add_credential)
+        }
     }
 
     override fun onStart() {
@@ -47,6 +52,8 @@ class Home : Fragment() {
                 if (record.isNotEmpty()) records.add(Credential(cred[0], cred[1], cred[2]))
             }
         }
-        binding.empty.visibility = if (binding.passwordView.adapter!!.itemCount == 0) View.VISIBLE else View.GONE
+
+        binding.empty.visibility =
+            if (binding.passwordView.adapter!!.itemCount == 0) View.VISIBLE else View.GONE
     }
 }
