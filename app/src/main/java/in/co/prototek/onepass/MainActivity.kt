@@ -3,6 +3,7 @@ package `in`.co.prototek.onepass
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.findNavController
@@ -15,17 +16,22 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.textfield.TextInputEditText
 import `in`.co.prototek.onepass.databinding.ActivityMainBinding
 import `in`.co.prototek.onepass.utils.hideKeyboard
+import `in`.co.prototek.onepass.viewmodels.CredentialViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private val credentialViewModel: CredentialViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Splash Screen config -- Happens before setContentView
         installSplashScreen()
+
+        // Read credentials from EncryptedFile and initialize viewModel
+        credentialViewModel.initialize(this)
 
         // ViewBinding
         _binding = ActivityMainBinding.inflate(layoutInflater)

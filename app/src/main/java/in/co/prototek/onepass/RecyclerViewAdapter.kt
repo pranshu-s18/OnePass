@@ -1,50 +1,109 @@
 package `in`.co.prototek.onepass
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import `in`.co.prototek.onepass.data.Credential
+import `in`.co.prototek.onepass.databinding.ItemViewBinding
+import `in`.co.prototek.onepass.utils.copyToClipboard
+import `in`.co.prototek.onepass.utils.handleHttps
 
-class RecyclerViewAdapter(private val records: ArrayList<Credential>): RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(
+    private val records: List<Credential>,
+    private val functions: RecyclerViewOperations
+) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+
+    // Interface to access operations inaccessible from RecyclerViewAdapter
+    // Ex: Navigation, ViewModel operations
+    interface RecyclerViewOperations {
+        fun onClick(credential: Credential)
+        fun deleteCredential(credential: Credential)
+    }
+
+    inner class ViewHolder(val binding: ItemViewBinding) : RecyclerView.ViewHolder(binding.root)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_view, parent, false)
-        return ViewHolder(itemView)
+        val binding = ItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val cur = records[position]
-        val context = holder.itemView.context
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        with(holder) {
+            val context = holder.itemView.context
+            with(records[position]) {
+                // On click, update selectedCredential (viewModel) and navigate to EditCredentialFragment
+                holder.itemView.setOnClickListener {
+                    functions.onClick(this)
+                }
 
-        holder.service.text = cur.service
-        holder.userName.text = context.getString(R.string.username, cur.username)
-        holder.userName.setOnClickListener {
-            val clip = ClipData.newPlainText("username", cur.username)
-            clipboard.setPrimaryClip(clip)
-            Toast.makeText(context, "Username copied to Clipboard", Toast.LENGTH_SHORT).show()
-        }
+                binding.service.text = service
+                binding.username.text = username
 
-        holder.password.text = context.getString(R.string.password, "*".repeat(cur.password.length))
-        holder.password.setOnClickListener {
-            val clip = ClipData.newPlainText("password", cur.password)
-            clipboard.setPrimaryClip(clip)
-            Toast.makeText(context, "Password copied to Clipboard", Toast.LENGTH_SHORT).show()
+                // Popup menu for options
+                binding.options.setOnClickListener {
+                    // Show menu at binding.options
+                    val popupMenu = PopupMenu(context, binding.options)
+                    popupMenu.inflate(R.menu.credential_options)
+
+                    // Handle menu item clicks
+                    popupMenu.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            // Open URL in browser (if possible)
+                            R.id.menu_open_url -> {
+                                try {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(handleHttps(service))
+                                    )
+
+                                    context.startActivity(intent)
+                                } catch (e: ActivityNotFoundException) {
+                                    e.printStackTrace()
+                                    Toast.makeText(
+                                        context,
+                                        "No application can handle this request. Please install a web browser or check your URL.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+
+                                true
+                            }
+
+                            // Copy username to clipboard
+                            R.id.menu_copy_username -> {
+                                copyToClipboard(context, username)
+                                true
+                            }
+
+                            // Copy password to clipboard
+                            R.id.menu_copy_password -> {
+                                copyToClipboard(context, password)
+                                true
+                            }
+
+                            // Delete credential (handled in viewModel)
+                            R.id.menu_delete_credential -> {
+                                functions.deleteCredential(this)
+                                true
+                            }
+
+                            // Invalid option
+                            else -> false
+                        }
+                    }
+
+                    popupMenu.show()
+                }
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return records.size
-    }
-
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val service: TextView = itemView.findViewById(R.id.service)
-        val userName: TextView = itemView.findViewById(R.id.username)
-        val password: TextView = itemView.findViewById(R.id.password)
     }
 }

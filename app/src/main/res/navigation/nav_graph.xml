@@ -9,10 +9,15 @@
         android:id="@+id/nav_home"
         android:name="in.co.prototek.onepass.Home"
         android:label="Home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
+
         <action
             android:id="@+id/nav_action_home_to_add_credential"
             app:destination="@id/nav_add_credential" />
+
+        <action
+            android:id="@+id/nav_action_home_to_edit_credential"
+            app:destination="@id/nav_edit_credential" />
     </fragment>
 
     <fragment
@@ -31,5 +36,11 @@
         android:name="in.co.prototek.onepass.AddCredential"
         android:label="Add new login"
         tools:layout="@layout/fragment_add_credential" />
+
+    <fragment
+        android:id="@+id/nav_edit_credential"
+        android:name="in.co.prototek.onepass.EditCredential"
+        android:label="Edit"
+        tools:layout="@layout/fragment_edit_credential" />
 
 </navigation>

@@ -29,7 +29,7 @@ class Generator : DialogFragment() {
         return binding.root
     }
 
-    // For dialogs, onViewCreated is called only if onCreateView does not return null
+    // For DialogFragment, onViewCreated is called only if onCreateView does not return null
     @SuppressLint("UseGetLayoutInflater", "SetTextI18n")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = FragmentGeneratorBinding.inflate(LayoutInflater.from(requireContext()))

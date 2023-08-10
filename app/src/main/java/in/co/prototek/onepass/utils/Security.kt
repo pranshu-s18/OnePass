@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
 import `in`.co.prototek.onepass.R
+import `in`.co.prototek.onepass.data.Credential
 import java.io.File
 import java.net.URLEncoder
 
@@ -38,4 +39,27 @@ fun readEncryptedFile(context: Context): String {
         encryptedFile.openFileInput()
             .use { input -> input.bufferedReader().use { it.readText() } }
     } else ""
+}
+
+// Updating an encrypted file is not supported
+// WORKAROUND: Delete the file and create a new one
+fun writeEncryptedFile(context: Context, credentials: List<Credential>?): Boolean {
+    if (credentials == null) return false
+    try {
+        // Delete file and create new one
+        clearAllData(context)
+
+        // List of credentials to CSV
+        val data = credentialsToCSV(credentials)
+
+        // Create encrypted file and write data
+        val encryptedFile = getEncryptedFile(context)
+        encryptedFile.openFileOutput().use { output -> output.write(data.toByteArray()) }
+
+        // Return true if successful
+        return true
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return false
+    }
 }

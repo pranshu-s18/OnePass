@@ -1,28 +1,22 @@
 package `in`.co.prototek.onepass
 
-import `in`.co.prototek.onepass.databinding.FragmentHomeBinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import `in`.co.prototek.onepass.data.Credential
-import `in`.co.prototek.onepass.utils.readEncryptedFile
-import `in`.co.prototek.onepass.utils.store
-import java.io.File
+import `in`.co.prototek.onepass.databinding.FragmentHomeBinding
+import `in`.co.prototek.onepass.viewmodels.CredentialViewModel
 
 class Home : Fragment() {
-    private lateinit var storeFile: File
-    private var records = mutableListOf<Credential>()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        storeFile = store(requireContext())
-    }
+    private val credentialViewModel: CredentialViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +28,27 @@ class Home : Fragment() {
         // Set up RecyclerView
         binding.passwordView.layoutManager = LinearLayoutManager(requireContext())
         binding.passwordView.setHasFixedSize(true)
-        binding.passwordView.adapter = RecyclerViewAdapter(records as ArrayList<Credential>)
+
+        // Implementation of RecyclerViewAdapter.RecyclerViewOperations interface
+        val operations = object : RecyclerViewAdapter.RecyclerViewOperations {
+            // If an item is clicked, set it as selected and navigate to EditCredentialFragment
+            override fun onClick(credential: Credential) {
+                credentialViewModel.setSelectedCredential(credential)
+                findNavController().navigate(R.id.nav_action_home_to_edit_credential)
+            }
+
+            // Delete credential (handled in viewModel)
+            override fun deleteCredential(credential: Credential) {
+                credentialViewModel.deleteCredential(credential, requireContext())
+            }
+        }
+
+        // Update RecyclerView when data changes
+        credentialViewModel.credentials.observe(viewLifecycleOwner) {
+            binding.empty.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            binding.passwordView.adapter = RecyclerViewAdapter(it, operations)
+        }
+
         return binding.root
     }
 
@@ -42,23 +56,20 @@ class Home : Fragment() {
         binding.add.setOnClickListener {
             findNavController().navigate(R.id.nav_action_home_to_add_credential)
         }
+
+        // Hide add button when scrolled to the bottom, show otherwise
+        binding.passwordView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) binding.add.hide()
+                else binding.add.show()
+            }
+        })
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // Read credentials from encrypted file and update RecyclerView
-        if (storeFile.exists()) {
-            val data = readEncryptedFile(requireContext())
-            records.clear()
-            data.lines().forEach { record ->
-                val cred = record.split(',')
-                if (record.isNotEmpty()) records.add(Credential(cred[0], cred[1], cred[2]))
-            }
-        }
-
-        // Show empty view if no credentials are saved
-        binding.empty.visibility =
-            if (binding.passwordView.adapter!!.itemCount == 0) View.VISIBLE else View.GONE
+    // Clear listeners
+    override fun onDestroyView() {
+        binding.passwordView.clearOnScrollListeners()
+        super.onDestroyView()
     }
 }

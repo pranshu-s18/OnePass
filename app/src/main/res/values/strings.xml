@@ -6,10 +6,8 @@
     <string name="empty">No Credentials Found</string>
     <string name="add_new_login">Add new login</string>
 
-    <!-- Credential related strings -->
+    <!-- Credential (CSV) -->
     <string name="record">\n%1$s, %2$s, %3$s</string>
-    <string name="username">Username: %1$s</string>
-    <string name="password">Password: %1$s</string>
 
     <!-- Biometric Messages -->
     <string name="B_Title">Biometric Authentication</string>
@@ -18,7 +16,7 @@
     <string name="B_Error">Error occurred in Biometric Authentication</string>
     <string name="B_Unavailable">Hardware unavailable</string>
     <string name="B_Not_Enrolled">Biometrics are not enrolled</string>
-    
+
     <!-- Navigation Drawer -->
     <string name="label_home">Home</string>
     <string name="label_generator">Generator</string>
@@ -40,8 +38,21 @@
     <!-- Button -->
     <string name="button_save">Save</string>
     <string name="button_copy">Copy</string>
+
+    <!-- Content Description -->
+    <string name="description_options">Options</string>
+
+    <!-- Password Generator -->
     <string name="password_lowercase">Lowercase (a-z)</string>
     <string name="password_uppercase">Uppercase (A-Z)</string>
     <string name="password_numbers">Numbers (0-9)</string>
     <string name="password_symbols">Symbols</string>
+
+    <!-- Menu -->
+    <string name="menu_open_url">Open Website</string>
+    <string name="menu_copy_username">Copy Username</string>
+    <string name="menu_copy_password">Copy Password</string>
+    <string name="menu_delete_credential">Delete</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

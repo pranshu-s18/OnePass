@@ -1,29 +1,36 @@
 package `in`.co.prototek.onepass
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import `in`.co.prototek.onepass.databinding.FragmentAddCredentialBinding
-import `in`.co.prototek.onepass.utils.clearAllData
-import `in`.co.prototek.onepass.utils.getEncryptedFile
-import `in`.co.prototek.onepass.utils.readEncryptedFile
 import `in`.co.prototek.onepass.utils.showKeyboard
+import `in`.co.prototek.onepass.viewmodels.CredentialViewModel
 
 class AddCredential : Fragment() {
     private var _binding: FragmentAddCredentialBinding? = null
     private val binding get() = _binding!!
+    private val credentialViewModel: CredentialViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Adding a listener to child fragment to get password from generator fragment
+        childFragmentManager.setFragmentResultListener(
+            "password",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            binding.passwordEditText.setText(bundle.getString("password"))
+        }
+
+        // View binding setup
         _binding = FragmentAddCredentialBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -39,57 +46,17 @@ class AddCredential : Fragment() {
             return@setOnEditorActionListener false
         }
 
-        // Encrypt and save credentials
+        // Add new credential, Validation handled in viewModel
         binding.saveCredentials.setOnClickListener {
-            // Validate input
-            if (binding.serviceEditText.text.isNullOrBlank() ||
-                binding.usernameEditText.text.isNullOrBlank() ||
-                binding.passwordEditText.text.isNullOrBlank()
-            ) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please fill all the fields",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
+            credentialViewModel.addCredential(
+                binding.serviceEditText.text.toString(),
+                binding.usernameEditText.text.toString(),
+                binding.passwordEditText.text.toString(),
+                requireContext()
+            )
 
-            // Update an encrypted file is not allowed
-            // WORKAROUND: Delete the existing file and create a new one
-            try {
-                // Read existing credentials and append new credentials
-                val allCredentials = readEncryptedFile(requireContext()).plus(
-                    getString(
-                        R.string.record,
-                        binding.serviceEditText.text,
-                        binding.usernameEditText.text,
-                        binding.passwordEditText.text
-                    )
-                )
-
-                // Delete existing file
-                clearAllData(requireContext())
-
-                // Create new file and write all credentials
-                val encryptedFile = getEncryptedFile(requireContext())
-                encryptedFile.openFileOutput()
-                    .use { output -> output.write(allCredentials.toByteArray()) }
-
-                // Go back to home
-                findNavController().navigateUp()
-            } catch (e: Exception) {
-                Log.d(MainActivity.TAG, "Unable to Save Credentials", e)
-                Toast.makeText(requireContext(), "Unable to save credentials", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        // Adding a listener to child fragment to get password from generator fragment
-        childFragmentManager.setFragmentResultListener(
-            "password",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            binding.passwordEditText.setText(bundle.getString("password"))
+            // Go back to home fragment
+            findNavController().navigateUp()
         }
 
         // Generate a random password - Show generator fragment using childFragmentManager
@@ -97,5 +64,11 @@ class AddCredential : Fragment() {
             val generator = Generator()
             generator.show(this.childFragmentManager, "Generator")
         }
+    }
+
+    // Clear listeners
+    override fun onDestroy() {
+        childFragmentManager.clearFragmentResultListener("password")
+        super.onDestroy()
     }
 }
