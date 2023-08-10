@@ -1,11 +1,13 @@
 package `in`.co.prototek.onepass
 
 import android.os.Bundle
+import android.view.WindowManager.LayoutParams.FLAG_SECURE
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.activityViewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
-import android.view.WindowManager.LayoutParams.FLAG_SECURE
-import `in`.co.prototek.onepass.utils.clearAllData
+import `in`.co.prototek.onepass.viewModel.CredentialViewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -24,7 +26,18 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
 
             // Erase all credentials
-            getString(R.string.pref_clearData_key) -> clearAllData(requireContext())
+            getString(R.string.pref_clearData_key) -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Clear all credentials?")
+                    .setMessage("This will delete all your credentials. This action cannot be undone.")
+                    .setPositiveButton("Clear") { _, _ ->
+                        val credentialViewModel: CredentialViewModel by activityViewModels()
+                        credentialViewModel.clearCredentials(requireContext())
+
+                    }
+                    .setNegativeButton("Cancel") { _, _ -> }
+                    .show()
+            }
         }
 
         return super.onPreferenceTreeClick(preference)

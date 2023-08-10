@@ -27,7 +27,7 @@ fun store(context: Context): File {
 }
 
 // Utility function to clear all data (delete file)
-fun clearAllData(context: Context) {
+fun clearFile(context: Context) {
     val file = store(context)
     if (file.exists()) file.delete()
 }
@@ -47,7 +47,7 @@ fun writeEncryptedFile(context: Context, credentials: List<Credential>?): Boolea
     if (credentials == null) return false
     try {
         // Delete file and create new one
-        clearAllData(context)
+        clearFile(context)
 
         // List of credentials to CSV
         val data = credentialsToCSV(credentials)

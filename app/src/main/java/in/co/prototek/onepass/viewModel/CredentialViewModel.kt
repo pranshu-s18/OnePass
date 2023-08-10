@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import `in`.co.prototek.onepass.data.Credential
+import `in`.co.prototek.onepass.utils.clearFile
 import `in`.co.prototek.onepass.utils.readEncryptedFile
 import `in`.co.prototek.onepass.utils.writeEncryptedFile
 
@@ -129,6 +130,14 @@ class CredentialViewModel : ViewModel() {
         // Update the list of credentials (LiveData) if successful
         _credentials.value = list
     }
+
+    // Delete all credentials
+    fun clearCredentials(context: Context) {
+        clearFile(context)
+        _credentials.value = listOf()
+        Toast.makeText(context, "Deleted all credentials", Toast.LENGTH_SHORT).show()
+    }
+
 
     // Utility function to set the selected credential, called from HomeFragment
     fun setSelectedCredential(credential: Credential) {

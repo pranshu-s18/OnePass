@@ -20,6 +20,14 @@ class EditCredential : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Adding a listener to child fragment to get password from generator fragment
+        childFragmentManager.setFragmentResultListener(
+            "password",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            binding.container.passwordEditText.setText(bundle.getString("password"))
+        }
+
         _binding = FragmentEditCredentialBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,6 +51,12 @@ class EditCredential : Fragment() {
 
             // Go back to home fragment
             findNavController().navigateUp()
+        }
+
+        // Generate a random password - Show generator fragment using childFragmentManager
+        binding.container.generatePasswordBtn.setOnClickListener {
+            val generator = Generator()
+            generator.show(this.childFragmentManager, "Generator")
         }
     }
 }
