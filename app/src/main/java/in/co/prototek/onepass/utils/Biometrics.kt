@@ -1,17 +1,15 @@
 package `in`.co.prototek.onepass.utils
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import `in`.co.prototek.onepass.MainActivity
 import `in`.co.prototek.onepass.R
-import java.util.Timer
-import kotlin.concurrent.schedule
 
-class Biometrics(val context: Context) {
+class Biometrics(val context: AppCompatActivity) {
     fun canAuthenticate(onSuccess: () -> Unit) {
         if (check()) {
             val executor = ContextCompat.getMainExecutor(context)
@@ -22,7 +20,7 @@ class Biometrics(val context: Context) {
                 .setNegativeButtonText("Cancel")
                 .build()
 
-            val biometricPrompt = BiometricPrompt(context as MainActivity, executor,
+            val biometricPrompt = BiometricPrompt(context, executor,
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         Log.d(MainActivity.TAG, errString.toString())
@@ -37,6 +35,8 @@ class Biometrics(val context: Context) {
                 })
 
             biometricPrompt.authenticate(promptInfo)
+        } else {
+            context.finishAndRemoveTask()
         }
     }
 

@@ -18,6 +18,11 @@
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
     </style>
 
+    <!-- Generator -->
+    <style name="Generator" parent="Theme.OnePass">
+        <item name="android:background">@color/white</item>
+    </style>
+
     <!-- Navigation Drawer Icon -->
     <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/white</item>

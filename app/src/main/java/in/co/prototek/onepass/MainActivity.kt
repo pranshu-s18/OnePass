@@ -13,11 +13,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.google.android.material.textfield.TextInputEditText
 import `in`.co.prototek.onepass.databinding.ActivityMainBinding
 import `in`.co.prototek.onepass.utils.Biometrics
 import `in`.co.prototek.onepass.utils.hideKeyboard
 import `in`.co.prototek.onepass.viewModel.CredentialViewModel
+import android.view.WindowManager.LayoutParams.FLAG_SECURE
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -30,6 +32,14 @@ class MainActivity : AppCompatActivity() {
 
         // Splash Screen config -- Happens before setContentView
         installSplashScreen()
+
+        // Disable screenshots and screen recording (if disabled in settings or first launch)
+        val allowScreenshots = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+            getString(R.string.pref_screenshots_key),
+            false
+        )
+
+        if (!allowScreenshots) window.setFlags(FLAG_SECURE, FLAG_SECURE)
 
         // ViewBinding
         _binding = ActivityMainBinding.inflate(layoutInflater)

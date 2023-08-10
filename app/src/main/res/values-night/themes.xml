@@ -22,4 +22,9 @@
     <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@color/white</item>
     </style>
+
+    <!-- Generator -->
+    <style name="Generator" parent="Theme.OnePass">
+        <item name="android:background">@color/dark_gray</item>
+    </style>
 </resources>
