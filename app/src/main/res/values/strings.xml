@@ -16,6 +16,7 @@
     <string name="B_Error">Error occurred in Biometric Authentication</string>
     <string name="B_Unavailable">Hardware unavailable</string>
     <string name="B_Not_Enrolled">Biometrics are not enrolled</string>
+    <string name="B_Description">Biometric authentication is mandatory to proceed</string>
 
     <!-- Navigation Drawer -->
     <string name="label_home">Home</string>

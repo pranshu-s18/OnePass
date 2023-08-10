@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.textfield.TextInputEditText
 import `in`.co.prototek.onepass.databinding.ActivityMainBinding
+import `in`.co.prototek.onepass.utils.Biometrics
 import `in`.co.prototek.onepass.utils.hideKeyboard
 import `in`.co.prototek.onepass.viewModel.CredentialViewModel
 
@@ -29,9 +30,6 @@ class MainActivity : AppCompatActivity() {
 
         // Splash Screen config -- Happens before setContentView
         installSplashScreen()
-
-        // Read credentials from EncryptedFile and initialize viewModel
-        credentialViewModel.initialize(this)
 
         // ViewBinding
         _binding = ActivityMainBinding.inflate(layoutInflater)
@@ -51,6 +49,16 @@ class MainActivity : AppCompatActivity() {
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Biometric authentication can only happen after app is launched
+        // If successful, read credentials from EncryptedFile and initialize viewModel
+        Biometrics(this).canAuthenticate() {
+            credentialViewModel.initialize(this)
+        }
     }
 
     // Handle menu item selection
