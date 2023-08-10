@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import `in`.co.prototek.onepass.databinding.FragmentEditCredentialBinding
-import `in`.co.prototek.onepass.viewmodels.CredentialViewModel
+import `in`.co.prototek.onepass.viewModel.CredentialViewModel
 
 class EditCredential : Fragment() {
     private var _binding: FragmentEditCredentialBinding? = null

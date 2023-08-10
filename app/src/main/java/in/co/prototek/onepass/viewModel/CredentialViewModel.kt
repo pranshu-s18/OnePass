@@ -1,4 +1,4 @@
-package `in`.co.prototek.onepass.viewmodels
+package `in`.co.prototek.onepass.viewModel
 
 import android.content.Context
 import android.widget.Toast

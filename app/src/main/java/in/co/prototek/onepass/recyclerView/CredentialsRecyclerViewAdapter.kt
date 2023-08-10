@@ -1,4 +1,4 @@
-package `in`.co.prototek.onepass
+package `in`.co.prototek.onepass.recyclerView
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import `in`.co.prototek.onepass.R
 import `in`.co.prototek.onepass.data.Credential
-import `in`.co.prototek.onepass.databinding.ItemViewBinding
+import `in`.co.prototek.onepass.databinding.CredentialsItemViewBinding
 import `in`.co.prototek.onepass.utils.copyToClipboard
 import `in`.co.prototek.onepass.utils.handleHttps
 
-class RecyclerViewAdapter(
+class CredentialsRecyclerViewAdapter(
     private val records: List<Credential>,
     private val functions: RecyclerViewOperations
-) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CredentialsRecyclerViewAdapter.ViewHolder>() {
 
     // Interface to access operations inaccessible from RecyclerViewAdapter
     // Ex: Navigation, ViewModel operations
@@ -25,10 +26,12 @@ class RecyclerViewAdapter(
         fun deleteCredential(credential: Credential)
     }
 
-    inner class ViewHolder(val binding: ItemViewBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: CredentialsItemViewBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            CredentialsItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

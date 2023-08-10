@@ -15,7 +15,7 @@
         android:paddingVertical="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_view" />
+        tools:listitem="@layout/credentials_item_view" />
 
     <!-- Displays a message when the list is empty -->
     <TextView

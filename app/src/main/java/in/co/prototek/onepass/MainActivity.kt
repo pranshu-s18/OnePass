@@ -16,7 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.textfield.TextInputEditText
 import `in`.co.prototek.onepass.databinding.ActivityMainBinding
 import `in`.co.prototek.onepass.utils.hideKeyboard
-import `in`.co.prototek.onepass.viewmodels.CredentialViewModel
+import `in`.co.prototek.onepass.viewModel.CredentialViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration

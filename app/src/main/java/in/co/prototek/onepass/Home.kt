@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import `in`.co.prototek.onepass.data.Credential
 import `in`.co.prototek.onepass.databinding.FragmentHomeBinding
-import `in`.co.prototek.onepass.viewmodels.CredentialViewModel
+import `in`.co.prototek.onepass.recyclerView.CredentialsRecyclerViewAdapter
+import `in`.co.prototek.onepass.viewModel.CredentialViewModel
 
 class Home : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -29,8 +30,8 @@ class Home : Fragment() {
         binding.passwordView.layoutManager = LinearLayoutManager(requireContext())
         binding.passwordView.setHasFixedSize(true)
 
-        // Implementation of RecyclerViewAdapter.RecyclerViewOperations interface
-        val operations = object : RecyclerViewAdapter.RecyclerViewOperations {
+        // Implementation of CredentialsRecyclerViewAdapter.RecyclerViewOperations interface
+        val operations = object : CredentialsRecyclerViewAdapter.RecyclerViewOperations {
             // If an item is clicked, set it as selected and navigate to EditCredentialFragment
             override fun onClick(credential: Credential) {
                 credentialViewModel.setSelectedCredential(credential)
@@ -46,7 +47,7 @@ class Home : Fragment() {
         // Update RecyclerView when data changes
         credentialViewModel.credentials.observe(viewLifecycleOwner) {
             binding.empty.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
-            binding.passwordView.adapter = RecyclerViewAdapter(it, operations)
+            binding.passwordView.adapter = CredentialsRecyclerViewAdapter(it, operations)
         }
 
         return binding.root

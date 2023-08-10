@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import `in`.co.prototek.onepass.databinding.FragmentAddCredentialBinding
 import `in`.co.prototek.onepass.utils.showKeyboard
-import `in`.co.prototek.onepass.viewmodels.CredentialViewModel
+import `in`.co.prototek.onepass.viewModel.CredentialViewModel
 
 class AddCredential : Fragment() {
     private var _binding: FragmentAddCredentialBinding? = null
